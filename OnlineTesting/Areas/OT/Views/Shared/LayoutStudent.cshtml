@@ -1,0 +1,37 @@
+﻿@{ 
+    Layout= null;
+    if (Session["user"]==null)
+    {
+        Response.Redirect("~/OT/Login");
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Page.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="center">
+        <br />
+        <h1>Login</h1>
+        <form method="post">
+            <div class="txtfield_login">
+                <input type="text" required />
+                <span></span>
+                <label>UserID</label>
+            </div>
+            <div class="txtfield_login">
+                <input type="password" required />
+                <span></span>
+                <label>Password</label>
+            </div>
+            <input type="submit" value="Login" />
+            <br />
+            <div class="notice"><br />If you don't have account, please contact this number: 0987654321. </div>
+        </form>
+    </div>
+</body>
+</html>

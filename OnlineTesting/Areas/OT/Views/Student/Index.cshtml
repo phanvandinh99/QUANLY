@@ -1,0 +1,613 @@
+﻿@using OnlineTesting.Models
+@{
+    Layout = null;
+    Student st = new Student();
+    if (Session["user"] == null)
+    {
+        Response.Redirect("~/OT/Login");
+    }
+    else
+    {
+        st = (Student)Session["user"];
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <title>Index</title>
+    <script>
+        function changepw(x) {
+            if (x == 1) {
+                document.getElementById("changepw_div").style.display = "block";
+                document.getElementById("buttoncancel_pw").style.display = "block";
+                document.getElementById("thongbao").style.display = "none";
+                document.getElementById("tooltip").style.display = "block";
+            }
+            if (x == 0) {
+                document.getElementById("changepw_div").style.display = "none";
+                document.getElementById("buttoncancel_pw").style.display = "none";
+                document.getElementById("tooltip").style.display = "none";
+            }
+            return;
+        }
+        function changedetail(x) {
+            if (x == 0) {
+                document.getElementById("changedetail_div").style.display = "none";
+                document.getElementById("history_div").style.display = "block";
+            }
+            if (x == 1) {
+                document.getElementById("thongbao").style.display = "none";
+                document.getElementById("changedetail_div").style.display = "block";
+                document.getElementById("history_div").style.display = "none";
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+            background: linear-gradient(120deg,#2980b9,#8e44ad);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .st_info {
+            position: absolute;
+            top: 48%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            background: white;
+            border-radius: 25px;
+        }
+        .st_changedetail {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            background: white;
+            border-radius: 25px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .changepw {
+            position: absolute;
+            top: 88%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            background: white;
+            border-radius: 25px;
+            font-size: 12px;
+        }
+        .history {
+            position: absolute;
+            top: 51%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: 470px;
+            background: white;
+            border-radius: 25px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .mission {
+            position: absolute;
+            top: 51%;
+            left: 80%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: 470px;
+            background: white;
+            border-radius: 25px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        #studentdetail {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #studentdetail td, #studentdetail th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        #studentdetail tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #studentdetail tr:hover {
+            background-color: #b6e7fa;
+        }
+        #studentdetail th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #2788b8;
+            color: white;
+        }
+        #pwchange {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #pwchange tr {
+            color: #152d89;
+        }
+        .logout {
+            position: absolute;
+            top: 10%;
+            left: 90%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            background: none;
+            border-radius: 10px;
+        }
+        .welcome {
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            background: none;
+            border-radius: 10px;
+            padding: 10px 10px 10px 10px;
+            color: #b6e7fa;
+            border: inherit 1px solid black;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        h3 {
+            padding-top: 0.2em;
+            font-family: Impact;
+            text-align: center;
+            color: #2788b8;
+        }
+        h2 {
+            text-shadow: 2px 0 0 #152d89, -2px 0 0 #152d89, 0 2px 0 #152d89, 0 -2px 0 #152d89, 1px 1px #152d89, -1px -1px 0 #152d89, 1px -1px 0 #152d89, -1px 1px 0 #152d89;
+        }
+        input[type="button"] {
+            transition: ease-out 0.2s;
+            border: 1px solid;
+            background: #2691d9;
+            border-radius: 25px;
+            color: #e9f4fb;
+            outline: none;
+            position: center;
+        }
+        input[type="button"]:hover {
+            box-shadow: inset 400px 0 0 0 #9b59b6;
+            cursor: pointer;
+        }
+        input[name="button_logout"] {
+            font-weight: 800;
+            font-size: 18px;
+            width: 60%;
+            height: 50px;
+        }
+        input[name="button_changepw"] {
+            font-weight: 400;
+            font-size: 18px;
+            width: 100%;
+            height: 40px;
+        }
+        input[name="button_changeinfo"] {
+            font-weight: 400;
+            font-size: 18px;
+            width: 100%;
+            height: 40px;
+        }
+        input[name="b_cancel_pw"] {
+            transition: ease-out 0.2s;
+            display: none;
+            height: 30px;
+            width: 30px;
+            border-radius: 20%;
+            border: 1px solid white;
+            position: absolute;
+            top: 2%;
+            left: 95%;
+            background-color: #ee5454;
+            color: white;
+            border: 1px solid black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        input[name="cancel_detailform"] {
+            height: 30px;
+            width: 30px;
+            border-radius: 20%;
+            border: 1px solid white;
+            position: absolute;
+            top: 5%;
+            left: 88%;
+            background-color: #ee5454;
+            color: white;
+            border: 1px solid black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        input[name="cancel_detailform"]:hover {
+            box-shadow: inset 400px 0 0 0 #ca0404;
+            color: white;
+            cursor: pointer;
+        }
+        input[name="b_cancel_pw"]:hover {
+            box-shadow: inset 400px 0 0 0 #ca0404;
+            color: white;
+            cursor: pointer;
+        }
+        input[name="button_changepw_green"] {
+            border: 1px solid;
+            background: #4CAF50;
+            border-radius: 25px;
+            color: white;
+            outline: none;
+            position: center;
+            font-weight: 400;
+            font-size: 18px;
+            width: 49%;
+            height: 40px;
+            position: absolute;
+            top: -63px;
+        }
+        input[name="button_changepw_green"]:hover{
+            box-shadow: inset 400px 0 0 0 #45a049;
+            color: white;
+        }
+        .brmedium {
+            display: block;
+            margin-bottom: 1em;
+        }
+        h4{
+            font-size:14px;
+            color: red;
+            padding: 5px 0 5px 15px;
+        }
+        .tooltip_changepw{
+            background: border-box;
+            background-color: palegreen;
+            font-size:12px;
+            border-radius:10px;
+            position: center;
+            height: 50px;
+            width: 225px;
+            text-align: center;
+            padding: 6px 5px 0 5px;
+            position: absolute;
+            top: 85%;
+            left: 550px;  
+            pointer-events:none;
+            border: 2px double black;
+        }
+        input[name="name_change"], input[name="mail_change"], input[name="number_change"], input[name="_change"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[name="submit_change"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[name="submit_change"]:hover {
+            background-color: #45a049;
+        }
+        input[name="more_info"] {
+            position: absolute;
+            top: 410px;
+            left: 5%;
+            width: 400px;
+            height: 40px;
+        }
+        input[name="more_info"]:hover {
+            box-shadow: inset 900px 0 0 0 #9b59b6;
+            cursor: pointer;
+        }
+        input[type="date"]{
+            width: 200px;
+            height: 30px;
+        }
+        select{
+            width: 100px;
+            height: 30px;
+        }
+        #testdetail {
+          font-family: Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        #testdetail td, #testdetail th {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+
+        #testdetail tr:nth-child(even){background-color: #f2f2f2;}
+
+        #testdetail tr:hover {background-color: #b6e7fa;}
+
+        #testdetail th {
+            position:sticky;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #2788b8;
+            color: white;
+            top: 0px;
+        }
+        .wrapper-table{
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout">
+        <input name="button_logout" type="button" onclick="location.href='@Url.Action("Logout", "Student")'" value="Logout" />
+    </div>
+    <div class="welcome">
+        <h2>Welcome to Online Testing!</h2>
+    </div>
+
+    <div class="st_info">
+        <h3>Student's Details</h3>
+        <table id="studentdetail">
+            <tr>
+                <th>ID</th>
+                <td>@st.Student_ID</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>@st.Account.Name.ToString()</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                @if (st.Account.IsMale == 1)
+                {
+                    <td>Male</td>
+                }
+                else
+                {
+                    <td>Female</td>
+                }
+            </tr>
+            <tr>
+                <th>Mail Address</th>
+                <td>@st.Account.MailAddress</td>
+            </tr>
+            <tr>
+                <th>Contact Number</th>
+                <td>@st.Account.ContactNumber</td>
+            </tr>
+            <tr>
+                <th>Day of birth (m-d-y)</th>
+                <td>@st.Account.DoB.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <th>Account Status</th>
+                @if (st.Account.IsLock == 1)
+                {
+                    <td>Locked</td>
+                }
+                else
+                {
+                    <td>Normal</td>
+                }
+            </tr>
+            <tr>
+                <th>
+                    Classroom Name
+                </th>
+                <td>
+                    @st.Classroom.Classroom_Name
+                </td>
+            </tr>
+        </table>
+        <span class="brmedium"></span>
+        <div class="but_change_pw_info">
+            <table id="buttons_change" style="width:100%">
+                <tr>
+                    <td>
+                        <input name="button_changepw" type="button" value="Change password" onclick="changepw(1)" />
+                    </td>
+                    <td>
+                        <input name="button_changeinfo" type="button" value="Change your detail" onclick="changedetail(1)" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="thongbao" id="thongbao">
+            <h4>@ViewData["thongbao2"]</h4>
+        </div>
+        <span class="brmedium"></span>
+    </div>
+
+    <div class="tooltip_changepw" id="tooltip" style="display:none">It automatically log out when you change successfully</div>
+
+    <div class="changepw" id="changepw_div" style="display:none">
+        <span class="brmedium"></span>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <table id="pwchange" width="80%" style="margin: 0 auto; text-align:center">
+                <tr>
+                    <td>
+                        Your password
+                    </td>
+                    <td>
+                        <input type="password" name="old_password" required />
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        New password
+                    </td>
+                    <td>
+                        <input type="password" name="new_password" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Re-Type new password
+                    </td>
+                    <td>
+                        <input type="password" name="check_newpassword" required />
+                    </td>
+                </tr>
+            </table>
+            <input type="button" id="buttoncancel_pw" name="b_cancel_pw" value="x" onclick="changepw(0)" />
+            <input name="button_changepw_green" type="submit" value="Change password" onclick="" />
+        }
+        <span class="brmedium"></span>
+    </div>
+
+    <div class="st_changedetail" id="changedetail_div" style="display:none">
+        <h3>Change Detail Form</h3>
+        <span class="brmedium"></span>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <label>Name</label>
+            <br />
+            <input type="text" id="name_change" name="name_change" placeholder="@st.Account.Name.ToString()" required>
+            <br />
+            <label>Mail Address</label>
+            <br />
+            <input type="text" id="mail_change" name="mail_change" placeholder="@st.Account.MailAddress.ToString()" required>
+            <br />
+            <label>Contact number</label>
+            <br />
+            <input type="text" id="number_change" name="number_change" placeholder="@st.Account.ContactNumber.ToString()" required>
+            <br />
+            <table id="bod_gender_table">
+                <tr>
+                    <td>
+                        <label for="birthdaytime">Day of birth</label>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <label>Gender</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="date" id="birthdaytime" name="dob_change" required>
+                    </td>
+                    <td></td>
+                    <td>
+                        <select id="gender_change" name="gender_change" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input name="submit_change" type="submit" value="Change detail" onclick="">
+            <input name="cancel_detailform" type="button" value="x" onclick="changedetail(0)">
+        }
+    </div>
+    <div class="mission" id="mission_div">
+        <h3>Your Missions</h3>
+        <span class="brmedium"></span>
+        <div class="wrapper-table">
+            <table id="testdetail">
+                <thead>
+                    <tr>
+                        <th>Test ID</th>
+                        <th>Classroom</th>
+                        <th>Subject</th>
+                        <th>Teacher</th>
+                        <th>Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Test i in BLL.Instance.TakeAllTestByClassID(st.Classroom_ID.ToString()))
+                    {
+                        <tr>
+                            <td>@i.Test_ID</td>
+                            <td>@i.Classroom.Classroom_Name</td>
+                            <td>@i.Subject.Subject_Name</td>
+                            <td>@i.Teacher.Account.Name</td>
+                            @if (BLL.Instance.CheckTestAvailable(i))
+                            {
+                                <td style="color:#28cd12">Yes</td>
+
+                            }
+                            else
+                            {
+                                <td style="color:red">No</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <input name="more_info" type="button" value="Check it here" onclick="location.href='@Url.Action("Mission", "Student")'">
+    </div>
+
+    <div class="history" id="history_div">
+        <h3>Your History</h3>
+        <span class="brmedium"></span>
+        <div class="wrapper-table">
+            <table id="testdetail">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Class</th>
+                        <th>Subject</th>
+                        <th>Score</th>
+                        <th><i class="fa fa-clock-o"></i> (min)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Test_History i in BLL.Instance.TakeTestHistoryByStudentID(st.Student_ID))
+                    {
+                        <tr>
+                            <td>@i.Test_History_ID</td>
+                            <td>@i.Class_H_Name</td>
+                            <td>@i.Subject_H_Name</td>
+                            @{
+                                int point = BLL.Instance.GetScoreFromTestHistory_ID(i.Test_History_ID);
+                                int numofquest = BLL.Instance.TakeNumberOfQuestionInTestHistory(i.Test_History_ID);
+                                string score = point.ToString() + "/" + numofquest.ToString();
+                                <td>@score</td>
+                            }
+                            <td>@i.Test_H_Duration</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <input name="more_info" type="button" value="Check it here" onclick="location.href='@Url.Action("History", "Student")'">
+    </div>
+</body>
+</html>
+
+
